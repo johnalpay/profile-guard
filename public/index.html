@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile Guard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Facebook Profile Guard</h1>
+  <form id="guardForm">
+    <input type="text" id="token" placeholder="Enter your token..." required />
+    <button type="submit">Activate</button>
+  </form>
+  <p id="responseMsg"></p>
+
+  <script>
+    const form = document.getElementById('guardForm');
+    const msg = document.getElementById('responseMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = document.getElementById('token').value;
+
+      const res = await fetch('/activate-guard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+
+      const data = await res.json();
+      msg.textContent = data.message;
+      msg.style.color = data.success ? 'lime' : 'red';
+    });
+  </script>
+</body>
+</html>
